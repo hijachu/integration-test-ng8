@@ -1,5 +1,5 @@
 /* tslint:disable:no-unused-variable */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -31,11 +31,9 @@ describe('TodosComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TodosComponent);
     component = fixture.componentInstance;
-
-
   });
 
-  it('should load todos from the server', () => {
+  xit('should load todos from the server', () => {
     const service = TestBed.get(TodoService);
     // fixture.debugElement.injector.get(TodoService);
     const data = [1, 2, 3];
@@ -45,4 +43,19 @@ describe('TodosComponent', () => {
 
     expect(component.todos).toBe(data);
   });
+
+  it('should load todos from the server', fakeAsync(() => {
+    const service = TestBed.get(TodoService);
+    const data = [1, 2, 3];
+    spyOn(service, 'getTodosPromise').and.returnValue( Promise.resolve(data) );
+
+    fixture.detectChanges();
+
+    // fixture.whenStable().then(() => {
+    //   expect(component.todos).toBe(data);
+    // });
+
+    tick();
+    expect(component.todos).toBe(data);
+  }));
 });

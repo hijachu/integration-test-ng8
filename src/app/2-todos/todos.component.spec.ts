@@ -15,7 +15,7 @@ import { from, of } from 'rxjs';
 // When you get to Lecture 6 (Providing Dependencies), be sure
 // to remove "x" from "xdescribe" below.
 
-xdescribe('TodosComponent', () => {
+describe('TodosComponent', () => {
   let component: TodosComponent;
   let fixture: ComponentFixture<TodosComponent>;
 
@@ -31,7 +31,7 @@ xdescribe('TodosComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TodosComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+
 
   });
 
@@ -40,6 +40,8 @@ xdescribe('TodosComponent', () => {
     // fixture.debugElement.injector.get(TodoService);
     const data = [1, 2, 3];
     spyOn(service, 'getTodos').and.returnValue( of(data) );
+
+    fixture.detectChanges();
 
     expect(component.todos).toBe(data);
   });

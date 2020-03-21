@@ -2,8 +2,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { TodosComponent } from './todos.component';
+import { TodoService } from './todo.service';
+import { from, of } from 'rxjs';
 
 // NOTE: I've deliberately excluded this suite from running
 // because the test will fail. This is because we have not
@@ -18,7 +21,9 @@ xdescribe('TodosComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TodosComponent ]
+      imports: [ HttpClientModule ],
+      declarations: [ TodosComponent ],
+      providers: [ TodoService ]
     })
     .compileComponents();
   }));
@@ -27,9 +32,15 @@ xdescribe('TodosComponent', () => {
     fixture = TestBed.createComponent(TodosComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should load todos from the server', () => {
+    const service = TestBed.get(TodoService);
+    // fixture.debugElement.injector.get(TodoService);
+    const data = [1, 2, 3];
+    spyOn(service, 'getTodos').and.returnValue( of(data) );
+
+    expect(component.todos).toBe(data);
   });
 });
